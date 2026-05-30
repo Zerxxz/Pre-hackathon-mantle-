@@ -56,6 +56,17 @@ contract PredictionMarket {
         emit Resolved(matchId, player, wasAI);
     }
 
+    /// @notice Read the current stake on each side for a (match, player).
+    /// @dev Used by MatchManager to derive the Turing score (was the crowd fooled?).
+    function poolStakes(uint256 matchId, address player)
+        external
+        view
+        returns (uint256 aiStake, uint256 humanStake)
+    {
+        Pool storage p = pools[matchId][player];
+        return (p.aiStake, p.humanStake);
+    }
+
     /// @notice Parimutuel payout: winners split the entire pool pro-rata.
     function claim(uint256 matchId, address player) external {
         Pool storage p = pools[matchId][player];

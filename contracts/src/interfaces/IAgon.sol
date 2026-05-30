@@ -49,3 +49,15 @@ interface IBenchmarkRegistry {
     function anchor(uint256 agentId, bytes32 attestationUID, bytes32 inputWindowHash) external;
     function isQualified(uint256 agentId) external view returns (bool);
 }
+
+interface ILeaderboard {
+    function recordResult(uint256 id, uint256 performanceDelta, uint256 turingDelta) external;
+}
+
+interface IPredictionMarket {
+    function resolve(uint256 matchId, address player, bool wasAI) external;
+    function poolStakes(uint256 matchId, address player)
+        external
+        view
+        returns (uint256 aiStake, uint256 humanStake);
+}

@@ -21,8 +21,10 @@ contract Deploy is Script {
         Leaderboard leaderboard = new Leaderboard();
         PredictionMarket market = new PredictionMarket(address(matchManager));
 
-        // Allow the match manager to write scores (orchestrator wires the rest).
+        // Wire the arena: authorize the match manager to write scores, and point
+        // it at the leaderboard + market (market already has it as resolver).
         leaderboard.setWriter(address(matchManager), true);
+        matchManager.setHooks(address(leaderboard), address(market));
 
         console2.log("AgentRegistry     :", address(registry));
         console2.log("BenchmarkRegistry :", address(benchmarks));
