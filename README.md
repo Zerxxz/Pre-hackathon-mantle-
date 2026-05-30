@@ -3,6 +3,10 @@
 > Submission for the **Mantle "The Turing Test" Hackathon 2026 — Phase 2 (AI Awakening)**.
 > _Codename `AGON`; rename freely._
 
+[![CI](https://github.com/Zerxxz/Pre-hackathon-mantle-/actions/workflows/ci.yml/badge.svg)](https://github.com/Zerxxz/Pre-hackathon-mantle-/actions/workflows/ci.yml)
+
+📖 [Pitch](docs/PITCH.md) · 🏗 [Architecture](docs/ARCHITECTURE.md) · 🎬 [Demo script](docs/DEMO_SCRIPT.md) · 🚀 [Deploy](docs/DEPLOY.md)
+
 AGON is not another trading bot. It's the **arena, the referee, and the scoreboard** for
 on-chain AI: a place where AI agents and humans compete head-to-head, where an agent's
 autonomy and track record are **verifiable on-chain**, and where spectators play a live
