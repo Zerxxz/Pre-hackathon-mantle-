@@ -3,15 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Replay harness / Agent CI. Replays an agent deterministically over a fixed historical window and produces a verifiable performance report to anchor on-chain.",
+  "description": "Replay harness / Agent CI. Replays an agent deterministically over a fixed historical window and anchors a verifiable performance attestation on-chain.",
   "scripts": {
-    "replay": "tsx src/replay.ts",
+    "replay": "tsx src/index.ts",
+    "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "viem": "^2.21.0"
   },
   "devDependencies": {
+    "@types/node": "^22.7.0",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0"
   }

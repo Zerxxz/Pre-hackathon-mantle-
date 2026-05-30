@@ -1,52 +1,58 @@
+import { keccak256, encodeAbiParameters } from "viem";
+
 /**
- * AGON Replay Harness (skeleton) — the Benchmark Layer.
+ * AGON Replay Harness — the Benchmark Layer.
  *
  * Goal: a track record that CANNOT be faked.
- *   1. Take a fixed, hashed input window (historical price series).
- *   2. Replay the agent over it step-by-step WITHOUT look-ahead.
- *   3. Produce a performance report (PnL, hit-rate, drawdown, latency).
- *   4. Hash the input window + agent commitment, wrap as an attestation, and
- *      anchor (attestationUID, inputWindowHash) via BenchmarkRegistry.anchor().
- *
- * Because the input window hash is published, anyone can re-run and verify.
- * For the MVP we run a local deterministic replay; EAS/TEE are stretch goals.
+ *   1. Take a fixed historical input window (price series).
+ *   2. Replay the agent over it WITHOUT look-ahead.
+ *   3. Compute metrics + a canonical `inputWindowHash` and an `attestationUID`.
+ *   4. Anchor (attestationUID, inputWindowHash) via BenchmarkRegistry.anchor()
+ *      so anyone can independently re-run the same window and verify.
  */
 
-import { decide, type MatchState } from "../../agent/src/policy.js";
-
-interface ReplayReport {
+export interface ReplayReport {
   steps: number;
   hits: number;
-  hitRate: number;
-  inputWindowHash: string; // TODO: keccak256 of the canonical input window
+  hitRateBps: number; // hit rate in basis points (0..10000)
+  inputWindowHash: `0x${string}`;
+  attestationUID: `0x${string}`;
 }
 
+/** Momentum heuristic: follow the last move (1 = UP, 0 = DOWN). Swap for a model. */
+function predict(series: number[]): 0 | 1 {
+  if (series.length < 2) return 1;
+  return series[series.length - 1] >= series[series.length - 2] ? 1 : 0;
+}
+
+/** TODO: load a real fixed historical Mantle price window (or a fork snapshot). */
 function loadHistoricalWindow(): number[] {
-  // TODO: load a fixed historical Mantle price series (or anvil --fork snapshot).
-  return [100, 101, 100, 102, 103, 101, 104];
+  return [100, 101, 100, 102, 103, 101, 104, 103, 105];
 }
 
 export function runReplay(): ReplayReport {
   const series = loadHistoricalWindow();
+
   let hits = 0;
   let steps = 0;
-
   for (let i = 1; i < series.length - 1; i++) {
-    const state: MatchState = { matchId: 0n, round: i, priceSeries: series.slice(0, i + 1) };
-    const action = decide(state); // 1 = up, 0 = down
+    const pred = predict(series.slice(0, i + 1)); // no look-ahead: only data up to i
     const wentUp = series[i + 1] >= series[i];
-    if ((action === 1 && wentUp) || (action === 0 && !wentUp)) hits++;
+    if ((pred === 1 && wentUp) || (pred === 0 && !wentUp)) hits++;
     steps++;
   }
 
-  return {
-    steps,
-    hits,
-    hitRate: steps === 0 ? 0 : hits / steps,
-    inputWindowHash: "0x_TODO_keccak256_of_window",
-  };
-}
+  const hitRateBps = steps === 0 ? 0 : Math.round((hits / steps) * 10000);
 
-const report = runReplay();
-console.log("[harness] replay report:", report);
-// TODO: anchor via BenchmarkRegistry.anchor(agentId, attestationUID, inputWindowHash)
+  // Canonical, reproducible commitments.
+  const seriesBig = series.map((n) => BigInt(n));
+  const inputWindowHash = keccak256(encodeAbiParameters([{ type: "uint256[]" }], [seriesBig]));
+  const attestationUID = keccak256(
+    encodeAbiParameters(
+      [{ type: "bytes32" }, { type: "uint256" }, { type: "uint256" }],
+      [inputWindowHash, BigInt(steps), BigInt(hits)],
+    ),
+  );
+
+  return { steps, hits, hitRateBps, inputWindowHash, attestationUID };
+}
