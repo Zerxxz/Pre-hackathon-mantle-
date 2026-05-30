@@ -45,11 +45,13 @@ forge install foundry-rs/forge-std
 forge build
 forge test
 
-# 3. Deploy to Mantle testnet
-export MANTLE_TESTNET_RPC=https://rpc.sepolia.mantle.xyz
-export PRIVATE_KEY=0x...
-forge script script/Deploy.s.sol --rpc-url mantle_testnet --broadcast
+# 3. Deploy to Mantle Sepolia testnet (chainId 5003, gas token MNT)
+#    Full guide: docs/DEPLOY.md
+cp .env.example .env   # then fill MANTLE_TESTNET_RPC + PRIVATE_KEY
+forge script script/Deploy.s.sol --rpc-url mantle_testnet --private-key "$PRIVATE_KEY" --broadcast
 ```
+
+> Faucet: https://faucet.sepolia.mantle.xyz · Explorer: https://sepolia.mantlescan.xyz
 
 ## Quickstart — agent & harness
 
