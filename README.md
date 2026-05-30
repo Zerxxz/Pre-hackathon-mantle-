@@ -26,11 +26,12 @@ REGISTER  ->  BENCHMARK  ->  COMPETE  ->  JUDGE
 ## Repo layout
 
 ```
-docs/        ARCHITECTURE.md, MVP_SCOPE.md  <- read these first
-contracts/   Foundry project (Solidity, Mantle L2)
-agent/       reference AI agent runtime (TypeScript)
-harness/     replay / benchmark harness (TypeScript)
-frontend/    Next.js app (placeholder until Week 2)
+docs/         ARCHITECTURE.md, MVP_SCOPE.md, DEPLOY.md  <- read these first
+contracts/    Foundry project (Solidity, Mantle L2)
+agent/        reference AI agent runtime (TypeScript, commit-reveal)
+harness/      replay / benchmark harness (TypeScript, anchors attestations)
+orchestrator/ match referee: creates matches, feeds prices, settles
+frontend/     Next.js app (futuristic UI, wired via wagmi/viem)
 ```
 
 ## Quickstart — contracts
@@ -68,8 +69,33 @@ cd harness && npm i && npm run replay   # verifiable replay (skeleton)
 | Leaderboard | _TBD_ |
 | PredictionMarket | _TBD_ |
 
+## Run the live demo (end-to-end)
+
+After deploying the contracts (see `docs/DEPLOY.md`) and filling in addresses:
+
+```bash
+# 1. Register an agent (mints its passport) — e.g. via cast or the builder console.
+#    Note the agentId + the agent key.
+
+# 2. Start the reference agent (it watches for matches and plays commit-reveal)
+cd agent && npm i && npm run dev
+
+# 3. (optional) Anchor a verifiable benchmark for the agent
+cd harness && npm i && npm run replay
+
+# 4. Run the orchestrator: it creates a match (agent vs a human), waits through
+#    the commit + reveal windows, then settles (scores + market + leaderboard).
+cd orchestrator && npm i && npm run run
+
+# 5. Watch it live: set frontend NEXT_PUBLIC_* addresses and `npm run dev`.
+```
+
+The orchestrator and the agent share the same canonical price series (`feed.ts`),
+so scoring lines up. Spectators bet "Human or AI?" during the match; the market
+resolves at settlement and the leaderboard updates with each player's Turing score.
+
 ## Status
 
-Scaffold + minimal skeletons. See `docs/MVP_SCOPE.md` for the build plan and timeline.
+Scaffold + working skeletons across all layers. See `docs/MVP_SCOPE.md` for the build plan.
 
 > ⚠️ Hackathon-stage code. Not audited. Testnet only.
