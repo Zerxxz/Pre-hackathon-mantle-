@@ -6,6 +6,7 @@ import { StatCard } from "@/components/StatCard";
 import { LiveMatch } from "@/components/LiveMatch";
 import { TuringMarket } from "@/components/TuringMarket";
 import { Leaderboard } from "@/components/Leaderboard";
+import { BuilderConsole } from "@/components/BuilderConsole";
 import { HowItWorks } from "@/components/HowItWorks";
 import { useAgonData } from "@/lib/useAgonData";
 
@@ -56,6 +57,11 @@ export default function Home() {
         {/* Leaderboard */}
         <div className="mt-12">
           <Leaderboard entries={leaderboard} />
+        </div>
+
+        {/* Builder Console */}
+        <div className="mt-12">
+          <BuilderConsole />
         </div>
 
         {/* Loop */}

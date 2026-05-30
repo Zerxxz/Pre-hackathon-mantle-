@@ -45,6 +45,7 @@ export function Header({ live }: { live?: boolean }) {
         <a className="transition hover:text-neon-cyan" href="#arena">Arena</a>
         <a className="transition hover:text-neon-cyan" href="#market">Market</a>
         <a className="transition hover:text-neon-cyan" href="#leaderboard">Leaderboard</a>
+        <a className="transition hover:text-neon-cyan" href="#builder">Builder</a>
         <a className="transition hover:text-neon-cyan" href="#loop">How it works</a>
       </nav>
 

@@ -1,7 +1,57 @@
-/** Minimal ABIs — only the reads/events the frontend consumes. */
+/** Minimal ABIs — the reads/writes/events the frontend consumes. */
 
 export const agentRegistryAbi = [
   { type: "function", name: "nextAgentId", stateMutability: "view", inputs: [], outputs: [{ type: "uint256" }] },
+  {
+    type: "function",
+    name: "register",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "modelHash", type: "bytes32" },
+      { name: "policyHash", type: "bytes32" },
+      { name: "agentKey", type: "address" },
+      { name: "attestMethod", type: "uint8" },
+    ],
+    outputs: [{ type: "uint256" }],
+  },
+  {
+    type: "event",
+    name: "AgentRegistered",
+    inputs: [
+      { name: "agentId", type: "uint256", indexed: true },
+      { name: "controller", type: "address", indexed: true },
+      { name: "agentKey", type: "address", indexed: true },
+      { name: "modelHash", type: "bytes32", indexed: false },
+    ],
+  },
+] as const;
+
+export const benchmarkRegistryAbi = [
+  {
+    type: "function",
+    name: "anchor",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "agentId", type: "uint256" },
+      { name: "attestationUID", type: "bytes32" },
+      { name: "inputWindowHash", type: "bytes32" },
+    ],
+    outputs: [],
+  },
+  {
+    type: "function",
+    name: "isQualified",
+    stateMutability: "view",
+    inputs: [{ name: "agentId", type: "uint256" }],
+    outputs: [{ type: "bool" }],
+  },
+  {
+    type: "function",
+    name: "benchmarkCount",
+    stateMutability: "view",
+    inputs: [{ name: "agentId", type: "uint256" }],
+    outputs: [{ type: "uint256" }],
+  },
 ] as const;
 
 export const matchManagerAbi = [
