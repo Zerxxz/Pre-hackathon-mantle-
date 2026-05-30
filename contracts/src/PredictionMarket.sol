@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
+import {ReentrancyGuard} from "./utils/ReentrancyGuard.sol";
+
 /// @title PredictionMarket — Arena Layer ("Human or AI?")
 /// @notice Spectators stake MNT guessing whether a given player in a match is a
 ///         human or an AI. Ground truth is sealed at match start and revealed at
@@ -8,7 +10,7 @@ pragma solidity ^0.8.24;
 ///         hook and the source of each player's Turing score.
 /// @dev MVP skeleton: simple parimutuel pools per (match, player). Native MNT is
 ///      the chain's gas token on Mantle, so msg.value works directly.
-contract PredictionMarket {
+contract PredictionMarket is ReentrancyGuard {
     struct Pool {
         uint256 aiStake;       // total staked on "is AI"
         uint256 humanStake;    // total staked on "is Human"
@@ -34,6 +36,7 @@ contract PredictionMarket {
 
     function bet(uint256 matchId, address player, bool guessIsAI) external payable {
         require(msg.value > 0, "no stake");
+        require(player != address(0), "player=0");
         Pool storage p = pools[matchId][player];
         require(!p.resolved, "resolved");
 
@@ -68,7 +71,7 @@ contract PredictionMarket {
     }
 
     /// @notice Parimutuel payout: winners split the entire pool pro-rata.
-    function claim(uint256 matchId, address player) external {
+    function claim(uint256 matchId, address player) external nonReentrant {
         Pool storage p = pools[matchId][player];
         require(p.resolved, "not resolved");
 

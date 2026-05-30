@@ -14,6 +14,7 @@
 import { getConfig, type AgonConfig } from "./config.js";
 import { matchManagerAbi } from "./abi.js";
 import { decide, type MatchState } from "./policy.js";
+import { llmDecide, llmEnabled } from "./llm.js";
 import { getPriceSeries } from "./feed.js";
 import {
   amIPlayer,
@@ -60,13 +61,15 @@ export async function playMatch(cfg: AgonConfig, matchId: bigint) {
   for (let round = 0; round < info.rounds; round++) {
     const priceSeries = await getPriceSeries(matchId, round);
     const state: MatchState = { matchId, round, priceSeries };
-    const pred = decide(state);
+    const llm = await llmDecide(state);
+    const pred = llm ?? decide(state);
+    const source = llm !== null ? "llm" : "heuristic";
     const action = encodeAction(pred);
     const salt = randomSalt();
     const commitment = commitmentOf(action, salt);
 
     const tx = await sendCommit(cfg, matchId, round, commitment);
-    console.log(`[agent] round ${round}: committed pred=${pred} (tx ${tx})`);
+    console.log(`[agent] round ${round}: committed pred=${pred} via ${source} (tx ${tx})`);
     plans.push({ round, action, salt, pred });
   }
 
@@ -100,6 +103,7 @@ async function watch(cfg: AgonConfig) {
 
 async function main() {
   const cfg = getConfig();
+  console.log(`[agent] policy: ${llmEnabled() ? "LLM (with heuristic fallback)" : "heuristic"}`);
   const oneShot = process.env.MATCH_ID;
   if (oneShot) {
     await playMatch(cfg, BigInt(oneShot));
