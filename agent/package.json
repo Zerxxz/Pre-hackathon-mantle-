@@ -1,0 +1,19 @@
+{
+  "name": "agon-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Reference AI agent for the AGON Turing Arena. Reads match state, decides an action, signs + commit-reveals it on Mantle.",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

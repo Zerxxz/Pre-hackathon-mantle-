@@ -1,0 +1,19 @@
+# Node
+node_modules/
+dist/
+.next/
+out/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Foundry (contracts has its own .gitignore too)
+contracts/cache/
+contracts/out/
+contracts/lib/
+contracts/broadcast/
+
+# OS / editor
+.DS_Store
