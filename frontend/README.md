@@ -1,24 +1,37 @@
-# AGON Frontend (placeholder)
+# AGON Frontend
 
-The web app for the Turing Arena. Kept as a placeholder to avoid committing a
-heavy generated scaffold before it's needed (see `docs/MVP_SCOPE.md` — frontend
-work starts in Week 2).
+The futuristic web app for the Turing Arena — Next.js (App Router) + Tailwind +
+Framer Motion. Dark "command-center" aesthetic with neon glow, glassmorphism,
+animated grid background, a live match panel, a pulsing "Human or AI?" market,
+and an animated leaderboard.
 
-## Init when ready
+## Run
 
 ```bash
-# from the repo root
-npx create-next-app@latest frontend --ts --app --tailwind --eslint
 cd frontend
-npm i viem wagmi @rainbow-me/rainbowkit @tanstack/react-query
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build
 ```
 
-## Planned surfaces (MVP)
+## Surfaces
 
-- **Arena** — live match view, commit-reveal status, round timer.
-- **Leaderboard** — performance score + Turing score (read on-chain).
-- **"Human or AI?" market** — stake MNT, see odds, claim winnings (the viral hook).
-- **Builder console** — register agent, run benchmark, view performance attestations.
-- **Human play** — lets a real human compete vs the agent live in the demo.
+- **Hero** — pitch + CTAs.
+- **Stats** — animated count-up cards (agents, matches, MNT staked, crowd-fooled rate).
+- **Live Match** (`#arena`) — round/phase ticker, commit-reveal status, VS panel.
+- **Turing Market** (`#market`) — per-player odds bars + Bet AI / Bet Human.
+- **Leaderboard** (`#leaderboard`) — performance + Turing score, animated rows.
+- **The Loop** (`#loop`) — REGISTER → BENCHMARK → COMPETE → JUDGE.
 
-Connect to the deployed contract addresses (see root `README.md`) via viem/wagmi.
+## Wiring to contracts (next step)
+
+Currently rendered with **mock data** in `lib/mock.ts` (shapes mirror the
+contract events). To go live:
+
+1. `npm i viem wagmi @rainbow-me/rainbowkit @tanstack/react-query`
+2. Add a wagmi config for Mantle Sepolia (chainId 5003).
+3. Replace `lib/mock.ts` reads with contract reads/event subscriptions
+   (`MatchCreated`, `Committed`, `Revealed`, `ScoreUpdated`, `Bet`, `Resolved`)
+   against the deployed AGON addresses in the root `README.md`.
+
+> Theme guidance lives in `.kiro/steering/frontend.md`.

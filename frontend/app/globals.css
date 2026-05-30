@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --grid: rgba(56, 189, 248, 0.08);
+  --glow-cyan: rgba(34, 211, 238, 0.55);
+  --glow-magenta: rgba(232, 121, 249, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background: #05060f;
+  color: #e8ecff;
+  font-family: "Rajdhani", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Animated futuristic background ---------- */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 50% 0%, #000 30%, transparent 80%);
+}
+
+.bg-orb {
+  position: fixed;
+  z-index: -2;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.55;
+}
+
+.bg-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% -10%, transparent 40%, rgba(5, 6, 15, 0.85) 100%);
+}
+
+/* ---------- Glass panels ---------- */
+.glass {
+  background: linear-gradient(180deg, rgba(20, 27, 56, 0.6), rgba(10, 14, 30, 0.5));
+  border: 1px solid rgba(120, 160, 255, 0.14);
+  border-radius: 18px;
+  backdrop-filter: blur(14px);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  padding: 1px;
+  background: linear-gradient(120deg, rgba(34, 211, 238, 0.5), transparent 35%, transparent 65%, rgba(232, 121, 249, 0.5));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.glow-text {
+  text-shadow: 0 0 18px var(--glow-cyan);
+}
+
+.glow-text-magenta {
+  text-shadow: 0 0 18px var(--glow-magenta);
+}
+
+.neon-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.6), transparent);
+}
+
+/* scanline sweep for "live" panels */
+.scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(180deg, transparent, rgba(34, 211, 238, 0.06), transparent);
+  pointer-events: none;
+}
+
+.chip {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(120, 160, 255, 0.22);
+}
+
+.btn-neon {
+  position: relative;
+  border-radius: 12px;
+  border: 1px solid rgba(34, 211, 238, 0.5);
+  background: rgba(34, 211, 238, 0.08);
+  color: #d6fbff;
+  transition: all 0.2s ease;
+}
+.btn-neon:hover {
+  background: rgba(34, 211, 238, 0.18);
+  box-shadow: 0 0 22px rgba(34, 211, 238, 0.4);
+}
+
+.btn-magenta {
+  border-color: rgba(232, 121, 249, 0.5);
+  background: rgba(232, 121, 249, 0.08);
+  color: #ffe6ff;
+}
+.btn-magenta:hover {
+  background: rgba(232, 121, 249, 0.18);
+  box-shadow: 0 0 22px rgba(232, 121, 249, 0.4);
+}
+
+.bar-track {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.font-display {
+  font-family: "Orbitron", ui-sans-serif, system-ui, sans-serif;
+}
+.font-mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
