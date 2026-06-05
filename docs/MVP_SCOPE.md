@@ -1,7 +1,7 @@
 # AGON — MVP Scope & Hackathon Timeline
 
 > Deliverable #2 — companion to `ARCHITECTURE.md`
-> Window: **~30 May → 16 Jun 2026 (~2.5 weeks)**. Solo/small-team realistic plan.
+> Window: . Solo/small-team realistic plan.
 
 ---
 
@@ -67,9 +67,9 @@ The demo must show the *complete loop* `REGISTER → BENCHMARK → COMPETE → J
 
 ---
 
-## 3. Timeline (~2.5 weeks)
+## 3. Timeline 
 
-### Week 1 (30 May → 5 Jun) — Foundations & on-chain core
+### Week 1 — Foundations & on-chain core
 | Day | Focus | Output |
 |---|---|---|
 | D1 (Sat) | Repo scaffold (Foundry + frontend + agent folders), Mantle testnet config, faucet | `forge build` passes, wallet funded |
@@ -78,7 +78,7 @@ The demo must show the *complete loop* `REGISTER → BENCHMARK → COMPETE → J
 | D4 | `PredictionMarket` + `Leaderboard` + tests | Full contract suite on testnet |
 | D5 | Reference agent runtime: reads match, signs+commits+reveals action | Agent plays a full match locally |
 
-### Week 2 (6 Jun → 12 Jun) — Loop integration & frontend
+### Week 2 — Loop integration & frontend
 | Day | Focus | Output |
 |---|---|---|
 | D6 | Match orchestrator (round timing, environment data feed) | Automated match lifecycle |
@@ -87,7 +87,7 @@ The demo must show the *complete loop* `REGISTER → BENCHMARK → COMPETE → J
 | D9 | Frontend: arena view + leaderboard (wallet connect, reads) | Can watch a live match |
 | D10 | Frontend: "Human or AI?" betting + claim + builder register/benchmark page | Full loop clickable |
 
-### Week 3 (13 Jun → 16 Jun) — Human play, polish, submit
+### Week 3 — Human play, polish, submit
 | Day | Focus | Output |
 |---|---|---|
 | D11 | Human play UI + end-to-end rehearsal on testnet | Human vs agent match works live |
