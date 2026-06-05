@@ -82,3 +82,4 @@ cast send <AGENT_REGISTRY> \
 - MNT is the gas token, so deploy/tx fees are paid in MNT (from the faucet).
 - Keep `contracts/.env` out of git (already in `.gitignore`).
 - The faucet rate-limits large balances — request small amounts as needed.
+```
